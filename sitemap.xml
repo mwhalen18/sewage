@@ -16,9 +16,24 @@
     <loc>https://mwhalen18.github.io/sewage/index.html</loc>
   </url>
   <url>
+    <loc>https://mwhalen18.github.io/sewage/reference/Joiner.html</loc>
+  </url>
+  <url>
     <loc>https://mwhalen18.github.io/sewage/reference/Pipeline.html</loc>
   </url>
   <url>
+    <loc>https://mwhalen18.github.io/sewage/reference/Splitter.html</loc>
+  </url>
+  <url>
+    <loc>https://mwhalen18.github.io/sewage/reference/add_node.html</loc>
+  </url>
+  <url>
+    <loc>https://mwhalen18.github.io/sewage/reference/execute.html</loc>
+  </url>
+  <url>
     <loc>https://mwhalen18.github.io/sewage/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://mwhalen18.github.io/sewage/reference/run.html</loc>
   </url>
 </urlset>

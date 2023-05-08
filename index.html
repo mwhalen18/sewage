@@ -64,7 +64,40 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>The goal of sewage is to …</p>
+<p>The goal of sewage is to provide a light-weight pipelining interface for data analyses. Rather than construct long scripts with intermiediate datasets or processes, you can construct a single pipeline and run it in a single call.</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>You can install the development version of sewage from Github:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"mwhalen18/sewage"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+</h2>
+<p>Below is an example of how to construct a simple pipeline.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mwhalen18/sewage" class="external-link">sewage</a></span><span class="op">)</span></span></code></pre></div>
+<p>You can use any function as a component in the pipeline, including custom functions you define or import from an external source.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">subset_data</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">cyl</span> <span class="op">==</span> <span class="fl">6</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="va">summarizer</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">[[</span><span class="st">'disp'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p>Currently, there are 3 components ready for use: <code>Nodes</code>, <code>Splitters</code>, and <code>Joiners</code>. Nodes take one object as input and return exactly one object. Splitters take in exactly one object and may return any number of outputs greater than 1. <code>Joiners</code> take in multiple objects and return 1 object according to the method you pass to the <code>Joiner</code> (More on these components below).</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pipeline</span> <span class="op">=</span> <span class="fu"><a href="reference/Pipeline.html">Pipeline</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">pipeline</span> <span class="op">=</span> <span class="va">pipeline</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/add_node.html">add_node</a></span><span class="op">(</span>component <span class="op">=</span> <span class="fu">readr</span><span class="fu">::</span><span class="va">read_csv</span>, name <span class="op">=</span> <span class="st">"Reader"</span>, input <span class="op">=</span> <span class="st">"file"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/add_node.html">add_node</a></span><span class="op">(</span>component <span class="op">=</span> <span class="fu"><a href="reference/Splitter.html">Splitter</a></span><span class="op">(</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"Splitter"</span>, input <span class="op">=</span> <span class="st">"Reader"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/add_node.html">add_node</a></span><span class="op">(</span>component <span class="op">=</span> <span class="va">subset_data</span>, name <span class="op">=</span> <span class="st">"Subsetter"</span>, input <span class="op">=</span> <span class="st">"Splitter.output_2"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/add_node.html">add_node</a></span><span class="op">(</span>component <span class="op">=</span> <span class="va">summarizer</span>, name <span class="op">=</span> <span class="st">"Summarizer"</span>, input <span class="op">=</span> <span class="st">"Splitter.output_1"</span><span class="op">)</span></span></code></pre></div>
+<p>Note outputs of a Splitter are accessible by specifying the name of the splitter component (In this case <code>Splitter</code>) suffixed with the outgoing edge in the format <code>{name}.output_{i}</code>.</p>
+<p>The first node in your pipeline should specify the argument that will be passed into the pipeline when we execute it (More on this below).</p>
+<p>We can easily visualize our pipeline using the <code>draw</code> method.</p>
+</div>
 </div>
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
@@ -101,6 +134,7 @@
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://github.com/mwhalen18/sewage/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/mwhalen18/sewage/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
 </ul>
 </div>
 
