@@ -6,3 +6,4 @@ renv/
 .Rbuildignore
 .Rprofile
 *.Rproj
+docs
