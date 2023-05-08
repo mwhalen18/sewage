@@ -7,3 +7,4 @@ renv/
 .Rprofile
 *.Rproj
 docs
+*.csv
