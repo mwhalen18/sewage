@@ -11,7 +11,7 @@ print.sewage_pipeline = function(x, ...) {
 #' @importFrom glue glue
 display_node = function(node, ...) {
 
-  cat(glue::glue(
+  cli::cli(glue::glue(
     "
     \t{node$name} <-- Input: {paste(node$input, collapse = ' ')}
     \n
