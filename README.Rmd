@@ -55,7 +55,7 @@ Currently, there are 3 components ready for use: `Nodes`, `Splitters`, and `Join
 ```{r}
 pipeline = Pipeline()
 pipeline = pipeline |>
-  add_node(component = readr::read_csv, name = "Reader", input = "file") |>
+  add_node(component = readr::read_csv, name = "Reader", input = "file", show_col_types=FALSE) |>
   add_node(component = Splitter(), name = "Splitter", input = "Reader") |>
   add_node(component = subset_data, name = "Subsetter", input = "Splitter.output_2") |>
   add_node(component = summarizer, name = "Summarizer", input = "Splitter.output_1")

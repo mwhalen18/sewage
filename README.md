@@ -53,7 +53,7 @@ components below).
 ``` r
 pipeline = Pipeline()
 pipeline = pipeline |>
-  add_node(component = readr::read_csv, name = "Reader", input = "file") |>
+  add_node(component = readr::read_csv, name = "Reader", input = "file", show_col_types=FALSE) |>
   add_node(component = Splitter(), name = "Splitter", input = "Reader") |>
   add_node(component = subset_data, name = "Subsetter", input = "Splitter.output_2") |>
   add_node(component = summarizer, name = "Summarizer", input = "Splitter.output_1")
@@ -86,12 +86,6 @@ arguments match!
 ``` r
 result = run(pipeline, file = 'temp.csv')
 #> New names:
-#> Rows: 32 Columns: 12
-#> ── Column specification
-#> ──────────────────────────────────────────────────────── Delimiter: "," chr
-#> (1): ...1 dbl (11): mpg, cyl, disp, hp, drat, wt, qsec, vs, am, gear, carb
-#> ℹ Use `spec()` to retrieve the full column specification for this data. ℹ
-#> Specify the column types or set `show_col_types = FALSE` to quiet this message.
 #> • `` -> `...1`
 ```
 
