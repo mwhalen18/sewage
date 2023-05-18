@@ -9,3 +9,4 @@ renv/
 docs
 *.csv
 .DS_Store
+sandbox.*

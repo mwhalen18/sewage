@@ -46,3 +46,11 @@ run = function(pipeline, ...) {
   return(pipeline)
 
 }
+
+is_executed_pipeline = function(x) {
+  if(!is_pipeline(x)) {
+    stop("x must be a sewage_pipeline")
+  }
+
+  return(length(x$outputs) > 0)
+}
