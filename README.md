@@ -10,8 +10,6 @@
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-# sewage
-
 The goal of sewage is to provide a light-weight pipelining interface for
 data analyses. Rather than construct long scripts with intermiediate
 datasets or processes, you can construct a single pipeline and run it in
