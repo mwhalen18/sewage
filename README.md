@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# sewage
+# sewage <a href="https://mwhalen18.github.io/sewage/"><img src="man/figures/logo.png" align="right" height="139" /></a>
 
 <!-- badges: start -->
 
@@ -9,6 +9,8 @@
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
+
+# sewage
 
 The goal of sewage is to provide a light-weight pipelining interface for
 data analyses. Rather than construct long scripts with intermiediate

@@ -13,12 +13,15 @@ knitr::opts_chunk$set(
 )
 ```
 
-# sewage
+# sewage <a href="https://mwhalen18.github.io/sewage/"><img src="man/figures/logo.png" align="right" height="139" /></a>
+
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/mwhalen18/sewage/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/mwhalen18/sewage/actions/workflows/R-CMD-check.yaml)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
+
+# sewage
 
 The goal of sewage is to provide a light-weight pipelining interface for data analyses. Rather than construct long scripts with intermiediate datasets or processes, you can construct a single pipeline and run it in a single call.
 
