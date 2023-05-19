@@ -16,6 +16,15 @@ pull_output(x, component, ...)
 
 \item{...}{reserved for future use}
 }
+\value{
+output from a terminating node of an executed sewage pipeline
+}
 \description{
 Extract output components from a pipeline
+}
+\examples{
+pipeline = Pipeline() |>
+    add_node(component = head, name = "Head", input = 'file')
+result = run(pipeline, file = iris)
+pull_output(result, "Head")
 }

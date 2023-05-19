@@ -23,15 +23,32 @@ is_pipeline = function(x) {
 #'
 #' This function is the extry point for executing a pipeline object
 #' @param pipeline an initialized pipeline object
-#' @param start node at which to start execution.
-#' @param halt halt execution at a specified node. Adding this parameter will halt execution of the remainder of the pipeline.
-#'     Note that because pipelines are executed sequentially in the order you add them to the pipeline, in the case of a branching pipeline,
-#'     any nodes from a different branch that were specified earlier in the pipeline will still be executed.
-#' @param ... parameter(s) to pass to starting node of the pipeline. This should match the `input` parameter of `add_node` of the starting node.
-#' In the case that you have multiple inputs or are starting at a later point in the pipeline,
+#' @param start node at which to start execution. If NULL then execution will
+#'     start at the first node
+#' @param halt halt execution at a specified node. Adding this parameter will
+#'     halt execution of the remainder of the pipeline.
+#'     Note that because pipelines are executed sequentially in the order you
+#'     add them to the pipeline, in the case of a branching pipeline, any nodes
+#'     from a different branch that were specified earlier in the pipeline will
+#'     still be executed.
+#' @param ... parameter(s) to pass to starting node of the pipeline. This should
+#'     match the `input` parameter of `add_node` of the starting node.
+#'     In the case that you have multiple inputs or are starting at a later point in the pipeline,
 #'     each argument should match the name of a starting node in your pipeline.
 #' @importFrom utils head tail
+#' @returns an executed sewage_pipeline object
 #' @export
+#' @examples
+#' func1 = function(x) {
+#'     x
+#' }
+#' pipeline = Pipeline() |>
+#'     add_node(component = func1, name = "Func1", input = "file") |>
+#'     add_node(component = func1, name = "Func2", input = "Func1") |>
+#'     add_node(component = func1, name = "Func3", input = "Func2")
+#' run(pipeline, file = mtcars)
+#' run(pipeline, start = "Func2", Func1 = iris)
+#' run(pipeline, halt = "Func2", file = mtcars)
 run = function(pipeline, start = NULL, halt = NULL, ...) {
 
   if(!is_pipeline(pipeline)) {
@@ -94,7 +111,13 @@ is_executed_pipeline = function(x) {
 #' @param x an executed pipeline object
 #' @param component a character string specifying which output component to pull
 #' @param ... reserved for future use
+#' @return output from a terminating node of an executed sewage pipeline
 #' @export
+#' @examples
+#' pipeline = Pipeline() |>
+#'     add_node(component = head, name = "Head", input = 'file')
+#' result = run(pipeline, file = iris)
+#' pull_output(result, "Head")
 pull_output = function(x, component, ...) {
   UseMethod("pull_output")
 }

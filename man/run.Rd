@@ -9,16 +9,36 @@ run(pipeline, start = NULL, halt = NULL, ...)
 \arguments{
 \item{pipeline}{an initialized pipeline object}
 
-\item{start}{node at which to start execution.}
+\item{start}{node at which to start execution. If NULL then execution will
+start at the first node}
 
-\item{halt}{halt execution at a specified node. Adding this parameter will halt execution of the remainder of the pipeline.
-Note that because pipelines are executed sequentially in the order you add them to the pipeline, in the case of a branching pipeline,
-any nodes from a different branch that were specified earlier in the pipeline will still be executed.}
+\item{halt}{halt execution at a specified node. Adding this parameter will
+halt execution of the remainder of the pipeline.
+Note that because pipelines are executed sequentially in the order you
+add them to the pipeline, in the case of a branching pipeline, any nodes
+from a different branch that were specified earlier in the pipeline will
+still be executed.}
 
-\item{...}{parameter(s) to pass to starting node of the pipeline. This should match the `input` parameter of `add_node` of the starting node.
+\item{...}{parameter(s) to pass to starting node of the pipeline. This should
+match the `input` parameter of `add_node` of the starting node.
 In the case that you have multiple inputs or are starting at a later point in the pipeline,
-    each argument should match the name of a starting node in your pipeline.}
+each argument should match the name of a starting node in your pipeline.}
+}
+\value{
+an executed sewage_pipeline object
 }
 \description{
 This function is the extry point for executing a pipeline object
+}
+\examples{
+func1 = function(x) {
+    x
+}
+pipeline = Pipeline() |>
+    add_node(component = func1, name = "Func1", input = "file") |>
+    add_node(component = func1, name = "Func2", input = "Func1") |>
+    add_node(component = func1, name = "Func3", input = "Func2")
+run(pipeline, file = mtcars)
+run(pipeline, start = "Func2", Func1 = iris)
+run(pipeline, halt = "Func2", file = mtcars)
 }

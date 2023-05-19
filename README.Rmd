@@ -24,7 +24,12 @@ The goal of sewage is to provide a light-weight pipelining interface for data an
 
 ## Installation
 
-You can install the development version of sewage from Github:
+To download the latest stable release
+```{r, eval=FALSE}
+install.packages("sewage")
+```
+
+Or, you can install the development version of sewage from Github:
 
 ```{r, eval=FALSE}
 devtools::install_github("mwhalen18/sewage")

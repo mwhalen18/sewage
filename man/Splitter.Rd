@@ -9,15 +9,23 @@ Splitter(edges = 2)
 \arguments{
 \item{edges}{number out outputs. Must be greater than 1}
 }
+\value{
+a \code{sewage_splitter} object
+}
 \description{
-\code{Splitter} takes in exactly one input node and propogates the input to \emph{n} output nodes.
+\code{Splitter} takes in exactly one input node and
+    propogates the input to \emph{n} output nodes.
 }
 \details{
-After executing a \code{Splitter} object, the pipeline will contains \emph{n} outputs and will be named as \code{SplitterName_output{i}}.
+After executing a \code{Splitter} object, the pipeline will contains
+    \emph{n} outputs and will be named as \code{SplitterName_output{i}}.
 }
 \note{
-The ouputs of a \code{Splitter} object are accessed through the naming convention \code{{name}.output_{i}} where \code{name}
-is the specified name of the Splitter object. This allows you to pass split objects to downstream nodes or access them through the pipeline results.
+The ouputs of a \code{Splitter} object are accessed through the naming
+    convention \code{{name}.output_{i}} where \code{name}
+    is the specified name of the Splitter object. This allows you to pass
+    split objects to downstream nodes or access them through the pipeline
+    results.
 }
 \examples{
 \dontrun{
