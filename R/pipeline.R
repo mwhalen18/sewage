@@ -54,3 +54,16 @@ is_executed_pipeline = function(x) {
 
   return(length(x$outputs) > 0)
 }
+
+pull_output = function(x, component, ...) {
+  UseMethod("pull_output")
+}
+
+pull_output.sewage_pipeline = function(x, component, ...) {
+  if(!is_executed_pipeline(x)) {
+    stop("No outputs available. Please execute pipeline using 'run'")
+  }
+  output = x$outputs[[component]]
+  print(output)
+}
+
