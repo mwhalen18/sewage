@@ -91,7 +91,9 @@ execute = function(x, envir) {
 execute.sewage_splitter = function(x, envir = parent.frame()) {
   outputs = envir$pipeline$outputs
   input  = x[['input']]
-
+  if(!input %in% names(outputs)) {
+    stop(sprintf("missing input to node %s", x$name))
+  }
   output = list()
 
   for(i in 1:x$edges) {
@@ -113,6 +115,9 @@ execute.sewage_node = function(x, envir = parent.frame()) {
   outputs = envir$pipeline$outputs
   input = x[['input']]
   call = x$call
+  if(!input %in% names(outputs)) {
+    stop(sprintf("missing input to node %s", x$name))
+  }
   call[[2]] = outputs[[input]]
   output = eval(call, envir = parent.frame(n = 2))
 
@@ -133,11 +138,16 @@ execute.sewage_joiner = function(x, envir = parent.frame()) {
   outputs = envir$pipeline$outputs
   inputs = x[['input']]
   call = x$call
+
+  for(input in inputs) {
+    if(!input %in% names(outputs)) {
+      stop(sprintf("missing input to node %s", x$name))
+    }
+  }
+
   for(i in 1:length(inputs)) {
     call[[i+1]] = outputs[[inputs[i]]]
   }
-  #call[[2]] = outputs[[inputs[1]]]
-  #call[[3]] = outputs[[inputs[2]]]
 
   output = eval(call, envir = parent.frame(n = 2))
 

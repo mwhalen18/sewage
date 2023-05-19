@@ -173,18 +173,69 @@ draw(pipeline)
 
 <img src="man/figures/multi-pipeline-viz.png" style="width:50.0%" />
 
+## Specifying entrypoints
+
+One of the benefits of {sewage} is that we can pick the pipeline up at
+any point using the optional `start` and `halt` options in `run`. This
+means we can build an entire data pipeline, but test small sections. For
+example, we may want to pass data down one branch without running the
+entire pipeline.
+
+``` r
+pipeline = Pipeline()
+pipeline = pipeline |>
+  add_node(readr::read_csv, name = "Reader", input = "file", show_col_types = FALSE) |>
+  add_node(Splitter(), name = "Splitter", input = "Reader") |>
+  add_node(summarizer, name = "Summarizer", input = "Splitter.output_1") |>
+  add_node(subset_data, name = "Subsetter", input = "Splitter.output_2") |>
+  add_node(func1, name = "Func1", input = "Subsetter") |>
+  add_node(func2, name = "Func2", input = "Func1") |>
+  add_node(func3, name = "Func3", input = "Func2") |>
+  add_node(func4, name = "Func4", input = "Func3") |>
+  add_node(func5, name = "Func5", input = "Func4") |>
+  add_node(func6, name = "Func6", input = "Summarizer")
+
+result = run(pipeline, start = 'Subsetter', halt = "Func3", Splitter.output_2 = mtcars)
+result
+#> ══ Pipeline [executed] ═════════════════════════════════════════════════════════
+#> 10 node(s):
+#>  Reader <-- Input: file
+#> 
+#>  Splitter <-- Input: Reader
+#> 
+#>  Summarizer <-- Input: Splitter.output_1
+#> 
+#>  Subsetter <-- Input: Splitter.output_2
+#> 
+#>  Func1 <-- Input: Subsetter
+#> 
+#>  Func2 <-- Input: Func1
+#> 
+#>  Func3 <-- Input: Func2
+#> 
+#>  Func4 <-- Input: Func3
+#> 
+#>  Func5 <-- Input: Func4
+#> 
+#>  Func6 <-- Input: Summarizer
+#> 
+#> 
+#> 1 output(s):
+#>  Func3
+```
+
+We see that the pipeline has stopped at the “Func3” node. Note we still
+have to pass the correct input name to the run command just as if it was
+the first node in the pipeline. Sewage pipelines are executed
+sequentially in the order you specify them in the pipeline. This means
+everything after your starting node will be executed and therefore must
+have an input at runtime. For more information, see the “Building
+Pipelines” vignette.
+
+## Conclusion
+
 Using these three components (`Nodes`, `Splitters` and `Joiners`) you
-can construct complex data pipelines and run them in a single call.
-
-# Why sewage?
-
-What is the point of `{sewage}` over more robust orchestrations tools
-like `{targets}` or Airflow? First, `sewage` is not an orchestration
-tool. Its primary purpose is to help modularize and organize complex
-data analysis scripts. If you have ever opened a single script to find
-multiple functions, intermediate datasets, visualizations, tests,
-models, and outputs, then sewage may be a starting place to aid in
-organization.
-
-If you feel comfortable using packages like `{targets}` or Airflow you
-probably should.
+can construct complex data pipelines and run them in a single call. By
+leveraging the `start` and `halt` arguments not only can we construct
+large complex data pipelines, but we can isolate components of the
+pipeline making data scripts more modular and easier to maintain.
