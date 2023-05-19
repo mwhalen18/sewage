@@ -127,7 +127,7 @@ edges are our terminating nodes. Therefore, we can access their results
 in the `outputs` object of the pipeline
 
 ``` r
-result$outputs$Subsetter
+pull_output(result, "Subsetter")
 #> # A tibble: 7 × 12
 #>   ...1           mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
 #>   <chr>        <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
@@ -141,7 +141,7 @@ result$outputs$Subsetter
 ```
 
 ``` r
-result$outputs$Summarizer
+pull_output(result, "Summarizer")
 #>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 #>    71.1   120.8   196.3   230.7   326.0   472.0
 ```

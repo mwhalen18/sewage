@@ -89,11 +89,11 @@ print(result)
 We can now access the results of our terminating nodes. A terminating node is any node that is not specified as input. By default when the pipeline is run, each node will overwrite the output of its input node. Therefore any node that is not fed forward to a new node will return output. In the case of this pipeline, the `Subsetter` and `Summarizer` edges are our terminating nodes. Therefore, we can access their results in the `outputs` object of the pipeline
 
 ```{r}
-result$outputs$Subsetter
+pull_output(result, "Subsetter")
 ```
 
 ```{r}
-result$outputs$Summarizer
+pull_output(result, "Summarizer")
 ```
 
 ## Multiple Entrypoints

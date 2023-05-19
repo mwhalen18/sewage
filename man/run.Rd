@@ -2,7 +2,7 @@
 % Please edit documentation in R/pipeline.R
 \name{run}
 \alias{run}
-\title{This function is the extry point for executing a pipeline object}
+\title{Run a pipeline}
 \usage{
 run(pipeline, ...)
 }
