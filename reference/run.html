@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">sewage</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,7 +48,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">run</span><span class="op">(</span><span class="va">pipeline</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">run</span><span class="op">(</span><span class="va">pipeline</span>, start <span class="op">=</span> <span class="cn">NULL</span>, halt <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -57,9 +57,20 @@
 <dd><p>an initialized pipeline object</p></dd>
 
 
+<dt>start</dt>
+<dd><p>node at which to start execution.</p></dd>
+
+
+<dt>halt</dt>
+<dd><p>halt execution at a specified node. Adding this parameter will halt execution of the remainder of the pipeline.
+Note that because pipelines are executed sequentially in the order you add them to the pipeline, in the case of a branching pipeline,
+any nodes from a different branch that were specified earlier in the pipeline will still be executed.</p></dd>
+
+
 <dt>...</dt>
-<dd><p>parameter(s) to pass to first node of the pipeline. This should match the `input` parameter of `add_node` of the first node.
-In the case that you have multiple inputs, each argument should match the name of a starting node in your pipeline.</p></dd>
+<dd><p>parameter(s) to pass to starting node of the pipeline. This should match the `input` parameter of `add_node` of the starting node.
+In the case that you have multiple inputs or are starting at a later point in the pipeline,
+    each argument should match the name of a starting node in your pipeline.</p></dd>
 
 </dl></div>
 

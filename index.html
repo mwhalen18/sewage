@@ -35,7 +35,7 @@
     
     <a class="navbar-brand me-2" href="index.html">sewage</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -177,16 +177,60 @@
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/draw.sewage_pipeline.html">draw</a></span><span class="op">(</span><span class="va">pipeline</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/multi-pipeline-viz.png" style="width:50.0%"></p>
-<p>Using these three components (<code>Nodes</code>, <code>Splitters</code> and <code>Joiners</code>) you can construct complex data pipelines and run them in a single call.</p>
+</div>
+<div class="section level2">
+<h2 id="specifying-entrypoints">Specifying entrypoints<a class="anchor" aria-label="anchor" href="#specifying-entrypoints"></a>
+</h2>
+<p>One of the benefits of {sewage} is that we can pick the pipeline up at any point using the optional <code>start</code> and <code>halt</code> options in <code>run</code>. This means we can build an entire data pipeline, but test small sections. For example, we may want to pass data down one branch without running the entire pipeline.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pipeline</span> <span class="op">=</span> <span class="fu"><a href="reference/Pipeline.html">Pipeline</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">pipeline</span> <span class="op">=</span> <span class="va">pipeline</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/add_node.html">add_node</a></span><span class="op">(</span><span class="fu">readr</span><span class="fu">::</span><span class="va"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_csv</a></span>, name <span class="op">=</span> <span class="st">"Reader"</span>, input <span class="op">=</span> <span class="st">"file"</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/add_node.html">add_node</a></span><span class="op">(</span><span class="fu"><a href="reference/Splitter.html">Splitter</a></span><span class="op">(</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"Splitter"</span>, input <span class="op">=</span> <span class="st">"Reader"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/add_node.html">add_node</a></span><span class="op">(</span><span class="va">summarizer</span>, name <span class="op">=</span> <span class="st">"Summarizer"</span>, input <span class="op">=</span> <span class="st">"Splitter.output_1"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/add_node.html">add_node</a></span><span class="op">(</span><span class="va">subset_data</span>, name <span class="op">=</span> <span class="st">"Subsetter"</span>, input <span class="op">=</span> <span class="st">"Splitter.output_2"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/add_node.html">add_node</a></span><span class="op">(</span><span class="va">func1</span>, name <span class="op">=</span> <span class="st">"Func1"</span>, input <span class="op">=</span> <span class="st">"Subsetter"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/add_node.html">add_node</a></span><span class="op">(</span><span class="va">func2</span>, name <span class="op">=</span> <span class="st">"Func2"</span>, input <span class="op">=</span> <span class="st">"Func1"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/add_node.html">add_node</a></span><span class="op">(</span><span class="va">func3</span>, name <span class="op">=</span> <span class="st">"Func3"</span>, input <span class="op">=</span> <span class="st">"Func2"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/add_node.html">add_node</a></span><span class="op">(</span><span class="va">func4</span>, name <span class="op">=</span> <span class="st">"Func4"</span>, input <span class="op">=</span> <span class="st">"Func3"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/add_node.html">add_node</a></span><span class="op">(</span><span class="va">func5</span>, name <span class="op">=</span> <span class="st">"Func5"</span>, input <span class="op">=</span> <span class="st">"Func4"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/add_node.html">add_node</a></span><span class="op">(</span><span class="va">func6</span>, name <span class="op">=</span> <span class="st">"Func6"</span>, input <span class="op">=</span> <span class="st">"Summarizer"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">result</span> <span class="op">=</span> <span class="fu"><a href="reference/run.html">run</a></span><span class="op">(</span><span class="va">pipeline</span>, start <span class="op">=</span> <span class="st">'Subsetter'</span>, halt <span class="op">=</span> <span class="st">"Func3"</span>, Splitter.output_2 <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span>
+<span><span class="va">result</span></span>
+<span><span class="co">#&gt; ══ Pipeline [executed] ═════════════════════════════════════════════════════════</span></span>
+<span><span class="co">#&gt; 10 node(s):</span></span>
+<span><span class="co">#&gt;  Reader &lt;-- Input: file</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  Splitter &lt;-- Input: Reader</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  Summarizer &lt;-- Input: Splitter.output_1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  Subsetter &lt;-- Input: Splitter.output_2</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  Func1 &lt;-- Input: Subsetter</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  Func2 &lt;-- Input: Func1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  Func3 &lt;-- Input: Func2</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  Func4 &lt;-- Input: Func3</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  Func5 &lt;-- Input: Func4</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  Func6 &lt;-- Input: Summarizer</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; 1 output(s):</span></span>
+<span><span class="co">#&gt;  Func3</span></span></code></pre></div>
+<p>We see that the pipeline has stopped at the “Func3” node. Note we still have to pass the correct input name to the run command just as if it was the first node in the pipeline. Sewage pipelines are executed sequentially in the order you specify them in the pipeline. This means everything after your starting node will be executed and therefore must have an input at runtime. For more information, see the “Building Pipelines” vignette.</p>
+</div>
+<div class="section level2">
+<h2 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
+</h2>
+<p>Using these three components (<code>Nodes</code>, <code>Splitters</code> and <code>Joiners</code>) you can construct complex data pipelines and run them in a single call. By leveraging the <code>start</code> and <code>halt</code> arguments not only can we construct large complex data pipelines, but we can isolate components of the pipeline making data scripts more modular and easier to maintain.</p>
 </div>
 </div>
-<div class="section level1">
-<h1 id="why-sewage">Why sewage?<a class="anchor" aria-label="anchor" href="#why-sewage"></a>
-</h1>
-<p>What is the point of <a href="https://github.com/mwhalen18/sewage" class="external-link">sewage</a> over more robust orchestrations tools like <a href="https://docs.ropensci.org/targets/" class="external-link">targets</a> or Airflow? First, <code>sewage</code> is not an orchestration tool. Its primary purpose is to help modularize and organize complex data analysis scripts. If you have ever opened a single script to find multiple functions, intermediate datasets, visualizations, tests, models, and outputs, then sewage may be a starting place to aid in organization.</p>
-<p>If you feel comfortable using packages like <a href="https://docs.ropensci.org/targets/" class="external-link">targets</a> or Airflow you probably should.</p>
-</div>
-
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
