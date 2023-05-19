@@ -104,20 +104,47 @@
 <span>  <span class="fu"><a href="reference/add_node.html">add_node</a></span><span class="op">(</span>component <span class="op">=</span> <span class="fu"><a href="reference/Splitter.html">Splitter</a></span><span class="op">(</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"Splitter"</span>, input <span class="op">=</span> <span class="st">"Reader"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/add_node.html">add_node</a></span><span class="op">(</span>component <span class="op">=</span> <span class="va">subset_data</span>, name <span class="op">=</span> <span class="st">"Subsetter"</span>, input <span class="op">=</span> <span class="st">"Splitter.output_2"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/add_node.html">add_node</a></span><span class="op">(</span>component <span class="op">=</span> <span class="va">summarizer</span>, name <span class="op">=</span> <span class="st">"Summarizer"</span>, input <span class="op">=</span> <span class="st">"Splitter.output_1"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pipeline</span></span>
+<span><span class="co">#&gt; ══ Pipeline ════════════════════════════════════════════════════════════════════</span></span>
+<span><span class="co">#&gt; 4 node(s):</span></span>
+<span><span class="co">#&gt;  Reader &lt;-- Input: file</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  Splitter &lt;-- Input: Reader</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  Subsetter &lt;-- Input: Splitter.output_2</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  Summarizer &lt;-- Input: Splitter.output_1</span></span></code></pre></div>
 <p>Note outputs of a Splitter are accessible by specifying the name of the splitter component (In this case <code>Splitter</code>) suffixed with the outgoing edge in the format <code>{name}.output_{i}</code>.</p>
 <p>The first node in your pipeline should specify the argument that will be passed into the pipeline when we execute it (More on this below).</p>
 <p>We can easily visualize our pipeline using the <code>draw</code> method.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/draw.sewage_pipeline.html">draw</a></span><span class="op">(</span><span class="va">pipeline</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/pipeline-vis.png"></p>
 <p>Here we execute the pipeline with the <code>run</code> command. It is important to note that the argument you pass to <code>run</code> should match the <code>input</code> argument of your first node in your pipeline. In this case we are passing a <code>file</code> argument in <code>run</code> and similarly our first node is set to receive a <code>file</code> argument as input.</p>
 <p>You may choose any argument name you like, as long as these two arguments match!</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span> <span class="op">=</span> <span class="fu"><a href="reference/run.html">run</a></span><span class="op">(</span><span class="va">pipeline</span>, file <span class="op">=</span> <span class="st">'temp.csv'</span><span class="op">)</span></span>
 <span><span class="co">#&gt; New names:</span></span>
-<span><span class="co">#&gt; • `` -&gt; `...1`</span></span></code></pre></div>
+<span><span class="co">#&gt; • `` -&gt; `...1`</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ══ Pipeline [executed] ═════════════════════════════════════════════════════════</span></span>
+<span><span class="co">#&gt; 4 node(s):</span></span>
+<span><span class="co">#&gt;  Reader &lt;-- Input: file</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  Splitter &lt;-- Input: Reader</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  Subsetter &lt;-- Input: Splitter.output_2</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  Summarizer &lt;-- Input: Splitter.output_1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; 2 output(s):</span></span>
+<span><span class="co">#&gt;  Subsetter</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  Summarizer</span></span></code></pre></div>
 <p>We can now access the results of our terminating nodes. A terminating node is any node that is not specified as input. By default when the pipeline is run, each node will overwrite the output of its input node. Therefore any node that is not fed forward to a new node will return output. In the case of this pipeline, the <code>Subsetter</code> and <code>Summarizer</code> edges are our terminating nodes. Therefore, we can access their results in the <code>outputs</code> object of the pipeline</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/pull_output.html">pull_output</a></span><span class="op">(</span><span class="va">result</span>, <span class="st">"Subsetter"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 7 × 12</span></span>
 <span><span class="co">#&gt;   ...1           mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span></span>
@@ -129,7 +156,7 @@
 <span><span class="co">#&gt; 5 Merc 280      19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4</span></span>
 <span><span class="co">#&gt; 6 Merc 280C     17.8     6  168.   123  3.92  3.44  18.9     1     0     4     4</span></span>
 <span><span class="co">#&gt; 7 Ferrari Dino  19.7     6  145    175  3.62  2.77  15.5     0     1     5     6</span></span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/pull_output.html">pull_output</a></span><span class="op">(</span><span class="va">result</span>, <span class="st">"Summarizer"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
 <span><span class="co">#&gt;    71.1   120.8   196.3   230.7   326.0   472.0</span></span></code></pre></div>
@@ -139,7 +166,7 @@
 </h2>
 <p>It is also possible to pass in multiple entrypoints by specifying the inputs in your arguments. This allows you to process multiple documents and bring them together using a <code>Joiner</code> later in your pipeline.</p>
 <p>The <code>Joiner</code> will take multiple inputs and convert them to a single output in the pipeline according to the function specified. This component works nicely for <code>dplyr</code>-like joins, but is not restricted to these methods.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="va">pipeline</span> <span class="op">=</span> <span class="fu"><a href="reference/Pipeline.html">Pipeline</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">pipeline</span> <span class="op">=</span> <span class="va">pipeline</span> <span class="op">|&gt;</span></span>
@@ -147,7 +174,7 @@
 <span>  <span class="fu"><a href="reference/add_node.html">add_node</a></span><span class="op">(</span><span class="va">subset_data</span>, name <span class="op">=</span> <span class="st">"Subsetter"</span>, input <span class="op">=</span> <span class="st">"data"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/add_node.html">add_node</a></span><span class="op">(</span><span class="fu"><a href="reference/Joiner.html">Joiner</a></span><span class="op">(</span>method <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="va"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"Joiner"</span>, input <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Reader"</span>, <span class="st">"Subsetter"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">output</span> <span class="op">=</span> <span class="fu"><a href="reference/run.html">run</a></span><span class="op">(</span><span class="va">pipeline</span>, file <span class="op">=</span> <span class="st">"temp.csv"</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/draw.sewage_pipeline.html">draw</a></span><span class="op">(</span><span class="va">pipeline</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/multi-pipeline-viz.png" style="width:50.0%"></p>
 <p>Using these three components (<code>Nodes</code>, <code>Splitters</code> and <code>Joiners</code>) you can construct complex data pipelines and run them in a single call.</p>
