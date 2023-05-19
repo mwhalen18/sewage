@@ -59,6 +59,19 @@ pipeline = pipeline |>
   add_node(component = summarizer, name = "Summarizer", input = "Splitter.output_1")
 ```
 
+``` r
+pipeline
+#> ══ Pipeline ════════════════════════════════════════════════════════════════════
+#> 4 node(s):
+#>  Reader <-- Input: file
+#> 
+#>  Splitter <-- Input: Reader
+#> 
+#>  Subsetter <-- Input: Splitter.output_2
+#> 
+#>  Summarizer <-- Input: Splitter.output_1
+```
+
 Note outputs of a Splitter are accessible by specifying the name of the
 splitter component (In this case `Splitter`) suffixed with the outgoing
 edge in the format `{name}.output_{i}`.
@@ -87,6 +100,22 @@ arguments match!
 result = run(pipeline, file = 'temp.csv')
 #> New names:
 #> • `` -> `...1`
+print(result)
+#> ══ Pipeline [executed] ═════════════════════════════════════════════════════════
+#> 4 node(s):
+#>  Reader <-- Input: file
+#> 
+#>  Splitter <-- Input: Reader
+#> 
+#>  Subsetter <-- Input: Splitter.output_2
+#> 
+#>  Summarizer <-- Input: Splitter.output_1
+#> 
+#> 
+#> 2 output(s):
+#>  Subsetter
+#> 
+#>  Summarizer
 ```
 
 We can now access the results of our terminating nodes. A terminating
