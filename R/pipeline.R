@@ -30,6 +30,7 @@ is_pipeline = function(x) {
 #' @param ... parameter(s) to pass to starting node of the pipeline. This should match the `input` parameter of `add_node` of the starting node.
 #' In the case that you have multiple inputs or are starting at a later point in the pipeline,
 #'     each argument should match the name of a starting node in your pipeline.
+#' @importFrom utils head tail
 #' @export
 run = function(pipeline, start = NULL, halt = NULL, ...) {
 
@@ -92,14 +93,7 @@ is_executed_pipeline = function(x) {
 #' Extract output components from a pipeline
 #' @param x an executed pipeline object
 #' @param component a character string specifying which output component to pull
-#' #' \dontrun{
-#' pipeline = Pipeline()
-#' pipeline = pipeline |>
-#'     add_node(name = 'Splitter', component = Splitter(), input = 'file')
-#' result = run(pipeline, file = mtcars)
-#' result$outputs$Splitter.output_1
-#' result$outputs$Splitter.output_2
-#' }
+#' @param ... reserved for future use
 #' @export
 pull_output = function(x, component, ...) {
   UseMethod("pull_output")
