@@ -12,15 +12,9 @@ pull_output(x, component, ...)
 \arguments{
 \item{x}{an executed pipeline object}
 
-\item{component}{a character string specifying which output component to pull
-#' \dontrun{
-pipeline = Pipeline()
-pipeline = pipeline |>
-    add_node(name = 'Splitter', component = Splitter(), input = 'file')
-result = run(pipeline, file = mtcars)
-result$outputs$Splitter.output_1
-result$outputs$Splitter.output_2
-}}
+\item{component}{a character string specifying which output component to pull}
+
+\item{...}{reserved for future use}
 }
 \description{
 Extract output components from a pipeline

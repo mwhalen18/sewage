@@ -1,7 +1,7 @@
 Package: sewage
 Type: Package
 Title: Sewage: A Light-Weight Data Pipelining Tool
-Version: 0.2.0
+Version: 0.2.1
 Authors@R: 
     person("Matthew", "Whalen", , "matthew.whalen18@gmail.com", role = c("aut", "cre"))
 Description: Light-weight pipelining tool -- 
