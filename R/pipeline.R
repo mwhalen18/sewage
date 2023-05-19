@@ -23,13 +23,40 @@ is_pipeline = function(x) {
 #'
 #' This function is the extry point for executing a pipeline object
 #' @param pipeline an initialized pipeline object
-#' @param ... parameter(s) to pass to first node of the pipeline. This should match the `input` parameter of `add_node` of the first node.
-#' In the case that you have multiple inputs, each argument should match the name of a starting node in your pipeline.
+#' @param start node at which to start execution.
+#' @param halt halt execution at a specified node. Adding this parameter will halt execution of the remainder of the pipeline.
+#'     Note that because pipelines are executed sequentially in the order you add them to the pipeline, in the case of a branching pipeline,
+#'     any nodes from a different branch that were specified earlier in the pipeline will still be executed.
+#' @param ... parameter(s) to pass to starting node of the pipeline. This should match the `input` parameter of `add_node` of the starting node.
+#' In the case that you have multiple inputs or are starting at a later point in the pipeline,
+#'     each argument should match the name of a starting node in your pipeline.
 #' @export
-run = function(pipeline, ...) {
+run = function(pipeline, start = NULL, halt = NULL, ...) {
 
   if(!is_pipeline(pipeline)) {
     stop("pipeline object must be of type 'sewage_pipeline'")
+  }
+
+  if(is_executed_pipeline(pipeline)) {
+    stop("pipeline has already been executed")
+  }
+
+  if(!is.null(halt)) {
+    halt = as.character(halt)
+    if (!halt %in% names(pipeline$nodes)) {
+      warning(sprintf("Halting node %s not in pipeline. Executing entire pipeline", halt))
+    }
+  } else{
+    halt = tail(names(pipeline$nodes),1)
+  }
+
+  if(!is.null(start)) {
+    start = as.character(start)
+    if(!start %in% names(pipeline$nodes)) {
+      stop(sprintf("Starting node %s not found in pipeline", start))
+    }
+  } else {
+    start = head(names(pipeline$nodes), 1)
   }
 
   dots = list(...)
@@ -39,8 +66,15 @@ run = function(pipeline, ...) {
 
   nodes = pipeline$nodes
 
-  for(node in nodes) {
+  start_index = which(names(pipeline$nodes) == start)
+  end_index = which(names(pipeline$nodes) == halt)
+  working_nodes = nodes[start_index:end_index]
+
+  for(node in working_nodes) {
     pipeline = execute(node)
+    if (node$name == halt) {
+      break
+    }
   }
 
   return(pipeline)

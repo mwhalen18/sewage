@@ -4,13 +4,20 @@
 \alias{run}
 \title{Run a pipeline}
 \usage{
-run(pipeline, ...)
+run(pipeline, start = NULL, halt = NULL, ...)
 }
 \arguments{
 \item{pipeline}{an initialized pipeline object}
 
-\item{...}{parameter(s) to pass to first node of the pipeline. This should match the `input` parameter of `add_node` of the first node.
-In the case that you have multiple inputs, each argument should match the name of a starting node in your pipeline.}
+\item{start}{node at which to start execution.}
+
+\item{halt}{halt execution at a specified node. Adding this parameter will halt execution of the remainder of the pipeline.
+Note that because pipelines are executed sequentially in the order you add them to the pipeline, in the case of a branching pipeline,
+any nodes from a different branch that were specified earlier in the pipeline will still be executed.}
+
+\item{...}{parameter(s) to pass to starting node of the pipeline. This should match the `input` parameter of `add_node` of the starting node.
+In the case that you have multiple inputs or are starting at a later point in the pipeline,
+    each argument should match the name of a starting node in your pipeline.}
 }
 \description{
 This function is the extry point for executing a pipeline object
