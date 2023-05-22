@@ -28,12 +28,10 @@ The ouputs of a \code{Splitter} object are accessed through the naming
     results.
 }
 \examples{
-\dontrun{
 pipeline = Pipeline()
 pipeline = pipeline |>
     add_node(name = 'Splitter', component = Splitter(), input = 'file')
 result = run(pipeline, file = mtcars)
-result$outputs$Splitter.output_1
-result$outputs$Splitter.output_2
-}
+pull_output(result, 'Splitter.output_1')
+pull_output(result, 'Splitter.output_2')
 }

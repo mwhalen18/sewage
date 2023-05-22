@@ -33,14 +33,12 @@ is_node = function(x) {
 #'     \emph{n} outputs and will be named as \code{SplitterName_output{i}}.
 #' @return a \code{sewage_splitter} object
 #' @examples
-#' \dontrun{
 #' pipeline = Pipeline()
 #' pipeline = pipeline |>
 #'     add_node(name = 'Splitter', component = Splitter(), input = 'file')
 #' result = run(pipeline, file = mtcars)
-#' result$outputs$Splitter.output_1
-#' result$outputs$Splitter.output_2
-#' }
+#' pull_output(result, 'Splitter.output_1')
+#' pull_output(result, 'Splitter.output_2')
 Splitter = function(edges = 2) {
   if(edges <= 1) {
     stop("edges must be > 1")
