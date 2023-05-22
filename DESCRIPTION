@@ -1,7 +1,7 @@
 Package: sewage
 Type: Package
 Title: A Light-Weight Data Pipelining Tool
-Version: 0.2.5
+Version: 0.2.5.9000
 Authors@R: 
     person("Matthew", "Whalen", , "matthew.whalen18@gmail.com", role = c("aut", "cre", "cph"))
 Description: Provides a simple interface to developing complex data pipelines which can be executed in a single call.
