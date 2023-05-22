@@ -31,7 +31,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary"><div class="container">
     
     <a class="navbar-brand me-2" href="index.html">sewage</a>
 
@@ -123,13 +123,11 @@
 <p>We can easily visualize our pipeline using the <code>draw</code> method.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/draw.html">draw</a></span><span class="op">(</span><span class="va">pipeline</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/pipeline-vis.png"></p>
+<p><img src="reference/figures/pipeline-vis.png" style="width:50.0%"></p>
 <p>Here we execute the pipeline with the <code>run</code> command. It is important to note that the argument you pass to <code>run</code> should match the <code>input</code> argument of your first node in your pipeline. In this case we are passing a <code>file</code> argument in <code>run</code> and similarly our first node is set to receive a <code>file</code> argument as input.</p>
 <p>You may choose any argument name you like, as long as these two arguments match!</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span> <span class="op">=</span> <span class="fu"><a href="reference/run.html">run</a></span><span class="op">(</span><span class="va">pipeline</span>, file <span class="op">=</span> <span class="st">'temp.csv'</span><span class="op">)</span></span>
-<span><span class="co">#&gt; New names:</span></span>
-<span><span class="co">#&gt; • `` -&gt; `...1`</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ══ Pipeline [executed] ═════════════════════════════════════════════════════════</span></span>
 <span><span class="co">#&gt; 4 node(s):</span></span>
@@ -149,16 +147,16 @@
 <p>We can now access the results of our terminating nodes. A terminating node is any node that is not specified as input. By default when the pipeline is run, each node will overwrite the output of its input node. Therefore any node that is not fed forward to a new node will return output. In the case of this pipeline, the <code>Subsetter</code> and <code>Summarizer</code> edges are our terminating nodes. Therefore, we can access their results in the <code>outputs</code> object of the pipeline</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/pull_output.html">pull_output</a></span><span class="op">(</span><span class="va">result</span>, <span class="st">"Subsetter"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 7 × 12</span></span>
-<span><span class="co">#&gt;   ...1           mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 Mazda RX4     21       6  160    110  3.9   2.62  16.5     0     1     4     4</span></span>
-<span><span class="co">#&gt; 2 Mazda RX4 W…  21       6  160    110  3.9   2.88  17.0     0     1     4     4</span></span>
-<span><span class="co">#&gt; 3 Hornet 4 Dr…  21.4     6  258    110  3.08  3.22  19.4     1     0     3     1</span></span>
-<span><span class="co">#&gt; 4 Valiant       18.1     6  225    105  2.76  3.46  20.2     1     0     3     1</span></span>
-<span><span class="co">#&gt; 5 Merc 280      19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4</span></span>
-<span><span class="co">#&gt; 6 Merc 280C     17.8     6  168.   123  3.92  3.44  18.9     1     0     4     4</span></span>
-<span><span class="co">#&gt; 7 Ferrari Dino  19.7     6  145    175  3.62  2.77  15.5     0     1     5     6</span></span></code></pre></div>
+<span><span class="co">#&gt; # A tibble: 7 × 11</span></span>
+<span><span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  21       6  160    110  3.9   2.62  16.5     0     1     4     4</span></span>
+<span><span class="co">#&gt; 2  21       6  160    110  3.9   2.88  17.0     0     1     4     4</span></span>
+<span><span class="co">#&gt; 3  21.4     6  258    110  3.08  3.22  19.4     1     0     3     1</span></span>
+<span><span class="co">#&gt; 4  18.1     6  225    105  2.76  3.46  20.2     1     0     3     1</span></span>
+<span><span class="co">#&gt; 5  19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4</span></span>
+<span><span class="co">#&gt; 6  17.8     6  168.   123  3.92  3.44  18.9     1     0     4     4</span></span>
+<span><span class="co">#&gt; 7  19.7     6  145    175  3.62  2.77  15.5     0     1     5     6</span></span></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/pull_output.html">pull_output</a></span><span class="op">(</span><span class="va">result</span>, <span class="st">"Summarizer"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
@@ -197,10 +195,13 @@
 <span>  <span class="fu"><a href="reference/add_node.html">add_node</a></span><span class="op">(</span><span class="va">func3</span>, name <span class="op">=</span> <span class="st">"Func3"</span>, input <span class="op">=</span> <span class="st">"Func2"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/add_node.html">add_node</a></span><span class="op">(</span><span class="va">func4</span>, name <span class="op">=</span> <span class="st">"Func4"</span>, input <span class="op">=</span> <span class="st">"Func3"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/add_node.html">add_node</a></span><span class="op">(</span><span class="va">func5</span>, name <span class="op">=</span> <span class="st">"Func5"</span>, input <span class="op">=</span> <span class="st">"Func4"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="reference/add_node.html">add_node</a></span><span class="op">(</span><span class="va">func6</span>, name <span class="op">=</span> <span class="st">"Func6"</span>, input <span class="op">=</span> <span class="st">"Summarizer"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">result</span> <span class="op">=</span> <span class="fu"><a href="reference/run.html">run</a></span><span class="op">(</span><span class="va">pipeline</span>, start <span class="op">=</span> <span class="st">'Subsetter'</span>, halt <span class="op">=</span> <span class="st">"Func3"</span>, Splitter.output_2 <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span>
-<span><span class="va">result</span></span>
+<span>  <span class="fu"><a href="reference/add_node.html">add_node</a></span><span class="op">(</span><span class="va">func6</span>, name <span class="op">=</span> <span class="st">"Func6"</span>, input <span class="op">=</span> <span class="st">"Summarizer"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/draw.html">draw</a></span><span class="op">(</span><span class="va">pipeline</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/pipeline3.png" style="width:50.0%"></p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">result</span> <span class="op">=</span> <span class="fu"><a href="reference/run.html">run</a></span><span class="op">(</span><span class="va">pipeline</span>, start <span class="op">=</span> <span class="st">'Subsetter'</span>, halt <span class="op">=</span> <span class="st">"Func3"</span>, Splitter.output_2 <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ══ Pipeline [executed] ═════════════════════════════════════════════════════════</span></span>
 <span><span class="co">#&gt; 10 node(s):</span></span>
 <span><span class="co">#&gt;  Reader &lt;-- Input: file</span></span>
@@ -237,6 +238,7 @@
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
+<li><a href="https://cloud.r-project.org/package=sewage" class="external-link">View on CRAN</a></li>
 <li><a href="https://github.com/mwhalen18/sewage/" class="external-link">Browse source code</a></li>
 <li><a href="https://github.com/mwhalen18/sewage/issues" class="external-link">Report a bug</a></li>
 </ul>
