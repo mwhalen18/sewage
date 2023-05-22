@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">sewage</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,22 +58,83 @@
 
 
 <dt>start</dt>
-<dd><p>node at which to start execution.</p></dd>
+<dd><p>node at which to start execution. If NULL then execution will
+start at the first node</p></dd>
 
 
 <dt>halt</dt>
-<dd><p>halt execution at a specified node. Adding this parameter will halt execution of the remainder of the pipeline.
-Note that because pipelines are executed sequentially in the order you add them to the pipeline, in the case of a branching pipeline,
-any nodes from a different branch that were specified earlier in the pipeline will still be executed.</p></dd>
+<dd><p>halt execution at a specified node. Adding this parameter will
+halt execution of the remainder of the pipeline.
+Note that because pipelines are executed sequentially in the order you
+add them to the pipeline, in the case of a branching pipeline, any nodes
+from a different branch that were specified earlier in the pipeline will
+still be executed.</p></dd>
 
 
 <dt>...</dt>
-<dd><p>parameter(s) to pass to starting node of the pipeline. This should match the `input` parameter of `add_node` of the starting node.
+<dd><p>parameter(s) to pass to starting node of the pipeline. This should
+match the `input` parameter of `add_node` of the starting node.
 In the case that you have multiple inputs or are starting at a later point in the pipeline,
-    each argument should match the name of a starting node in your pipeline.</p></dd>
+each argument should match the name of a starting node in your pipeline.</p></dd>
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    
 
+<p>an executed sewage_pipeline object</p>
+    </div>
+
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">func1</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="va">x</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="va">pipeline</span> <span class="op">=</span> <span class="fu"><a href="Pipeline.html">Pipeline</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="add_node.html">add_node</a></span><span class="op">(</span>component <span class="op">=</span> <span class="va">func1</span>, name <span class="op">=</span> <span class="st">"Func1"</span>, input <span class="op">=</span> <span class="st">"file"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="add_node.html">add_node</a></span><span class="op">(</span>component <span class="op">=</span> <span class="va">func1</span>, name <span class="op">=</span> <span class="st">"Func2"</span>, input <span class="op">=</span> <span class="st">"Func1"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="add_node.html">add_node</a></span><span class="op">(</span>component <span class="op">=</span> <span class="va">func1</span>, name <span class="op">=</span> <span class="st">"Func3"</span>, input <span class="op">=</span> <span class="st">"Func2"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">run</span><span class="op">(</span><span class="va">pipeline</span>, file <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ══ Pipeline [executed] ═════════════════════════════════════════════════════════</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-style: italic;">3 node(s):</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Func1 &lt;-- Input: file</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Func2 &lt;-- Input: Func1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Func3 &lt;-- Input: Func2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-style: italic;">1 output(s):</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Func3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="fu">run</span><span class="op">(</span><span class="va">pipeline</span>, start <span class="op">=</span> <span class="st">"Func2"</span>, Func1 <span class="op">=</span> <span class="va">iris</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ══ Pipeline [executed] ═════════════════════════════════════════════════════════</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-style: italic;">3 node(s):</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Func1 &lt;-- Input: file</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Func2 &lt;-- Input: Func1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Func3 &lt;-- Input: Func2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-style: italic;">1 output(s):</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Func3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="fu">run</span><span class="op">(</span><span class="va">pipeline</span>, halt <span class="op">=</span> <span class="st">"Func2"</span>, file <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ══ Pipeline [executed] ═════════════════════════════════════════════════════════</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-style: italic;">3 node(s):</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Func1 &lt;-- Input: file</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Func2 &lt;-- Input: Func1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Func3 &lt;-- Input: Func2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-style: italic;">1 output(s):</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Func2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 

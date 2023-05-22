@@ -28,13 +28,13 @@
     <loc>https://mwhalen18.github.io/sewage/reference/add_node.html</loc>
   </url>
   <url>
-    <loc>https://mwhalen18.github.io/sewage/reference/draw.sewage_pipeline.html</loc>
-  </url>
-  <url>
-    <loc>https://mwhalen18.github.io/sewage/reference/execute.html</loc>
+    <loc>https://mwhalen18.github.io/sewage/reference/draw.html</loc>
   </url>
   <url>
     <loc>https://mwhalen18.github.io/sewage/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://mwhalen18.github.io/sewage/reference/print.sewage_pipeline.html</loc>
   </url>
   <url>
     <loc>https://mwhalen18.github.io/sewage/reference/pull_output.html</loc>
