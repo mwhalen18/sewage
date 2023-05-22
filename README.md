@@ -91,7 +91,7 @@ We can easily visualize our pipeline using the `draw` method.
 draw(pipeline)
 ```
 
-![](man/figures/pipeline-vis.png)
+<img src="man/figures/pipeline-vis.png" style="width:50.0%" />
 
 Here we execute the pipeline with the `run` command. It is important to
 note that the argument you pass to `run` should match the `input`
@@ -104,8 +104,6 @@ arguments match!
 
 ``` r
 result = run(pipeline, file = 'temp.csv')
-#> New names:
-#> • `` -> `...1`
 print(result)
 #> ══ Pipeline [executed] ═════════════════════════════════════════════════════════
 #> 4 node(s):
@@ -134,16 +132,16 @@ in the `outputs` object of the pipeline
 
 ``` r
 pull_output(result, "Subsetter")
-#> # A tibble: 7 × 12
-#>   ...1           mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
-#>   <chr>        <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-#> 1 Mazda RX4     21       6  160    110  3.9   2.62  16.5     0     1     4     4
-#> 2 Mazda RX4 W…  21       6  160    110  3.9   2.88  17.0     0     1     4     4
-#> 3 Hornet 4 Dr…  21.4     6  258    110  3.08  3.22  19.4     1     0     3     1
-#> 4 Valiant       18.1     6  225    105  2.76  3.46  20.2     1     0     3     1
-#> 5 Merc 280      19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4
-#> 6 Merc 280C     17.8     6  168.   123  3.92  3.44  18.9     1     0     4     4
-#> 7 Ferrari Dino  19.7     6  145    175  3.62  2.77  15.5     0     1     5     6
+#> # A tibble: 7 × 11
+#>     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
+#>   <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+#> 1  21       6  160    110  3.9   2.62  16.5     0     1     4     4
+#> 2  21       6  160    110  3.9   2.88  17.0     0     1     4     4
+#> 3  21.4     6  258    110  3.08  3.22  19.4     1     0     3     1
+#> 4  18.1     6  225    105  2.76  3.46  20.2     1     0     3     1
+#> 5  19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4
+#> 6  17.8     6  168.   123  3.92  3.44  18.9     1     0     4     4
+#> 7  19.7     6  145    175  3.62  2.77  15.5     0     1     5     6
 ```
 
 ``` r
@@ -200,9 +198,17 @@ pipeline = pipeline |>
   add_node(func4, name = "Func4", input = "Func3") |>
   add_node(func5, name = "Func5", input = "Func4") |>
   add_node(func6, name = "Func6", input = "Summarizer")
+```
 
+``` r
+draw(pipeline)
+```
+
+<img src="man/figures/pipeline3.png" style="width:50.0%" />
+
+``` r
 result = run(pipeline, start = 'Subsetter', halt = "Func3", Splitter.output_2 = mtcars)
-result
+print(result)
 #> ══ Pipeline [executed] ═════════════════════════════════════════════════════════
 #> 10 node(s):
 #>  Reader <-- Input: file
