@@ -6,6 +6,4 @@
 
 ## Resubmission
 
-* removed \dontrun from examples
-
-* There are no references required therefore none are listed in the package deescription
+* Changed package title to lowercase
