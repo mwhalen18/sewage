@@ -1,4 +1,4 @@
-#' @aliases draw draw.sewage_pipeline
+#' @rdname draw
 #' @export
 draw.sewage_pipeline = function(pipeline, ...) {
   dag = construct_dag(pipeline)
@@ -7,10 +7,11 @@ draw.sewage_pipeline = function(pipeline, ...) {
 }
 
 #' Visualize a pipeline
-#' @description This function draws a DAG of the existing pipeline flow. For additional information see \code{igraph::spec_viz}
+#' @description This function draws a DAG of the existing pipeline flow.
+#'     For additional information see \code{igraph::spec_viz}
+#' @return an \code{htmlwdget} object
 #' @param pipeline an instantiated \code{pipeline} object
 #' @param ... reserved for future use
-#' @rdname draw.sewage_pipeline
 #' @export
 draw = function(pipeline, ...) {
   UseMethod("draw")

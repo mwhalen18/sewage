@@ -9,6 +9,18 @@ Joiner(method)
 \arguments{
 \item{method}{function to join incoming objects together}
 }
+\value{
+a \code{sewage_joiner} object
+}
 \description{
-Initialize a Joiner object
+The \code{Joiner} takes in objects and joins them according to a
+defined method into a single node.
+}
+\note{
+additional arguments to be passed to \code{method} should be passed in the
+\code{...} of [add_node()]
+}
+\examples{
+pipeline = Pipeline() |>
+    add_node(Joiner(method = rbind), name = "Joiner", input = c("file1", "file2"))
 }

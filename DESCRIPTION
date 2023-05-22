@@ -1,11 +1,11 @@
 Package: sewage
 Type: Package
-Title: Sewage: A Light-Weight Data Pipelining Tool
-Version: 0.2.1
+Title: A Light-Weight Data Pipelining Tool
+Version: 0.2.5.9000
 Authors@R: 
-    person("Matthew", "Whalen", , "matthew.whalen18@gmail.com", role = c("aut", "cre"))
-Description: Light-weight pipelining tool -- 
-    simplifying complex data analysis scripts.
+    person("Matthew", "Whalen", , "matthew.whalen18@gmail.com", role = c("aut", "cre", "cph"))
+Description: Provides a simple interface to developing complex data pipelines which can be executed in a single call.
+    'sewage' makes it easy to test, debug, and share data pipelines through it's interface and visualizations.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

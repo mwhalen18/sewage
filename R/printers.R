@@ -1,4 +1,16 @@
+#' Printing Pipelines
+#' @description print a sewage pipeline
+#' @param x a [Pipeline()] object
+#' @param ... not used
+#' @description this will print all nodes and theis inputs in the pipeline.
+#'    Once the pipeline has been executed, print will show the outputs available
+#'    through [pull_output()]
+#' @returns formatted sewage pipeline output
 #' @export
+#' @examples
+#' pipeline = Pipeline() |>
+#'     add_node(component = head, name = "Head", input = "file")
+#' print(pipeline)
 print.sewage_pipeline = function(x, ...) {
   #cat(sprintf("Pipeline Object with %i node(s): \n\n", length(x$nodes)))
 

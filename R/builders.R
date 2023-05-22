@@ -8,17 +8,13 @@
 #' @param ... additional arguments to be passed to the `component` argument
 #' @returns a \code{sewage_pipeline} object
 #' @examples
-#' # Using predefined functions
-#' \dontrun{
 #' my_func = function(df) {
 #'     df %>%
 #'         head(15)
 #' }
 #' pipeline = Pipeline()
 #' pipeline = pipeline |>
-#'     add_node(name = 'reader', component = readr::read_csv, input = 'file', show_col_types=FALSE) |>
-#'     add_node(name = 'processor', component = my_func, input = 'reader')
-#' }
+#'     add_node(name = 'processor', component = my_func, input = 'file')
 #' @export
 add_node = function(pipeline, component, name, input, ...) {
   if (!is_pipeline(pipeline)) {

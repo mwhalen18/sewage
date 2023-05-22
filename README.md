@@ -17,7 +17,13 @@ a single call.
 
 ## Installation
 
-You can install the development version of sewage from Github:
+To download the latest stable release
+
+``` r
+install.packages("sewage")
+```
+
+Or, you can install the development version of sewage from Github:
 
 ``` r
 devtools::install_github("mwhalen18/sewage")

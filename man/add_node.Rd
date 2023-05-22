@@ -24,15 +24,11 @@ a \code{sewage_pipeline} object
 \code{add_node()} will place a new node in the specified pipeline. This will be executed sequentially when the pipeline is executed using \code{run()}
 }
 \examples{
-# Using predefined functions
-\dontrun{
 my_func = function(df) {
     df \%>\%
         head(15)
 }
 pipeline = Pipeline()
 pipeline = pipeline |>
-    add_node(name = 'reader', component = readr::read_csv, input = 'file', show_col_types=FALSE) |>
-    add_node(name = 'processor', component = my_func, input = 'reader')
-}
+    add_node(name = 'processor', component = my_func, input = 'file')
 }
