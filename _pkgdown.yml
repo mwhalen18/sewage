@@ -1,4 +1,4 @@
 url: https://mwhalen18.github.io/sewage/
 template:
   bootstrap: 5
-
+  bootswatch: yeti

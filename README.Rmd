@@ -9,7 +9,9 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
-  out.width = "100%"
+  out.width = "100%",
+  warning = FALSE,
+  message = FALSE
 )
 ```
 
@@ -105,7 +107,7 @@ We can easily visualize our pipeline using the `draw` method.
 draw(pipeline)
 ```
 
-![](man/figures/pipeline-vis.png)
+![](man/figures/pipeline-vis.png){width=50%}
 
 Here we execute the pipeline with the `run` command. It is important to note that the argument you pass to `run` should match the `input` argument of your first node in your pipeline. In this case we are passing a `file` argument in `run` and similarly our first node is set to receive a `file` argument as input.
 
@@ -166,9 +168,17 @@ pipeline = pipeline |>
   add_node(func4, name = "Func4", input = "Func3") |>
   add_node(func5, name = "Func5", input = "Func4") |>
   add_node(func6, name = "Func6", input = "Summarizer")
+```
 
+```{r, eval = FALSE}
+draw(pipeline)
+```
+![](man/figures/pipeline3.png){width=50%}
+
+
+```{r}
 result = run(pipeline, start = 'Subsetter', halt = "Func3", Splitter.output_2 = mtcars)
-result
+print(result)
 ```
 
 We see that the pipeline has stopped at the "Func3" node. Note we still have to pass the correct input name to the run command just as if it was the first node in the pipeline. Sewage pipelines are executed sequentially in the order you specify them in the pipeline. This means everything after your starting node will be executed and therefore must have an input at runtime. For more information, see the "Building Pipelines" vignette. 
