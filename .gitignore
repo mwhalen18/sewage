@@ -7,7 +7,6 @@ renv/
 .Rprofile
 *.Rproj
 docs
-*.csv
 .DS_Store
 sandbox.*
 sewage.png
