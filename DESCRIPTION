@@ -15,9 +15,12 @@ URL: https://github.com/mwhalen18/sewage,
 BugReports: https://github.com/mwhalen18/sewage/issues
 Suggests: 
     testthat (>= 3.0.0),
-    dplyr
+    dplyr,
+    knitr,
+    rmarkdown
 Config/testthat/edition: 3
 Imports: 
     DiagrammeR,
     glue,
     cli
+VignetteBuilder: knitr

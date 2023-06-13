@@ -36,7 +36,7 @@ construct_dag = function(pipeline) {
   for (node in pipeline$nodes) {
     name = node$name
     if(inherits(node, "sewage_joiner")) {
-      name = c(name, name)
+      name = rep(name, length(node$input))
     }
     names = append(names, name)
   }
