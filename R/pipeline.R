@@ -132,6 +132,5 @@ pull_output.sewage_pipeline = function(x, component, ...) {
     stop("component must be a character string")
   }
   output = x$outputs[[component]]
-  print(output)
 }
 
